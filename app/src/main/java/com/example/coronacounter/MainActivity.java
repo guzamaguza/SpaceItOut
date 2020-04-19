@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.lang.Math;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Handler;
 
 import android.os.Vibrator;
@@ -29,6 +31,13 @@ import android.os.Vibrator;
 
 
 public class MainActivity extends AppCompatActivity {
+    private Timer myTimer;
+    Timer myTimer = new Timer();
+    myTimer.scheduleAtFixedRate(new TimerTask() {
+            View myView = findViewById(R.id.searchButton);
+            myView.performClick();
+    }, 0, 30000);//every 30 seconds
+
 
 
     //TextView exposureTextView;
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
             Log.i("Action",action);
 
+
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 statusTextView.setText("Finished");
                 searchButton.setEnabled(true);
@@ -75,18 +85,33 @@ public class MainActivity extends AppCompatActivity {
                 double base = 10;
                 double distance_m = Math.pow(base,exponent);
                 double distance_ft = distance_m * 3.28;
-                double counter = 0;
+                //double counter = 0;
+                int counter = 0;
 
-                if (!addresses.contains(address)) {
+                if (distance_ft < 6.00) {
+                    // Get instance of Vibrator from current Context
+                    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    // Vibrate for 500 milliseconds
+                    v.vibrate(500);
+                    TextView text = (TextView) findViewById(R.id.counterTextView);
+                    counter = counter + 1;
+                    text.setText(String.valueOf(counter));
+                    //alertTextView.setVisibility(View.VISIBLE);
+                }
+
+                    if (!addresses.contains(address)) {
                     addresses.add(address);
                     String deviceString = "";
                     if (name == null || name.equals("")) {
                         deviceString = address + " - RSSI " + rssi + "dBm" + distance_ft;
+
+                        /*
                         if (distance_ft < 6.00) {
                             // Get instance of Vibrator from current Context
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             // Vibrate for 400 milliseconds
                             v.vibrate(500);
+
 
                             //alertTextView.setVisibility(View.VISIBLE);
                             //alertTextView.postDelayed(new Runnable() {
@@ -99,26 +124,34 @@ public class MainActivity extends AppCompatActivity {
                             //TextView textView = (TextView)findViewById(R.id.alertTextView);
                             //textView.setVisibility(TextView.VISIBLE);
 
+                            //counterTextView.setText("One");
                             //counter = counter + 1;
                             //String counter_out = String.valueOf(counter);
                             //counterTextView.setText("Hi");
                         }
+                        */
+
                     } else {
                         deviceString = name + " - RSSI " + rssi + "dBm" + distance_ft;
+
+                        /*
                         if (distance_ft < 6.00) {
                             // Get instance of Vibrator from current Context
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             // Vibrate for 400 milliseconds
                             v.vibrate(500);
 
+
                             //alertTextView.setVisibility(View.VISIBLE);
                             //TextView textView = (TextView)findViewById(R.id.alertTextView);
                             //textView.setVisibility(TextView.VISIBLE);
 
+                            //counterTextView.setText("One");
                             //counter = counter + 1;
                             //String counter_out = String.valueOf(counter);
                             //counterTextView.setText("Hi");
                         }
+                        */
                     }
 
 

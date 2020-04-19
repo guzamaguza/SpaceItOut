@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="button">Button</string>
+    <string name="possible_exposures">Possible Exposures:</string>
+    <string name="get_back">Get Back!!!</string>
+    <string name="violations">Violations:</string>
+    <string name="zero">Zero!</string>
+</resources>

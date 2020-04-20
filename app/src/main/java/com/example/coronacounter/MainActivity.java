@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.lang.Math;
+import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Handler;
 import java.util.logging.LogRecord;
@@ -26,21 +27,12 @@ import java.util.logging.LogRecord;
 import android.os.Vibrator;
 
 
-
 public class MainActivity extends AppCompatActivity {
     int counter = 0;
-    
-    /*
-    public void timer( String[] args ){
-        Timer myTimer = new Timer();
-        myTimer.scheduleAtFixedRate(
-            new TimerTask() {
-            View myView = findViewById(R.id.broadcastReceiver);
-            myView.startDiscovery();
-        },0,30000);//every 30 seconds
-    }
-    */
 
+    int timer_counter = 0;
+
+/*
     Handler handler = new Handler();
     private Runnable periodicUpdate = new Runnable () {
         @Override
@@ -48,9 +40,55 @@ public class MainActivity extends AppCompatActivity {
             // scheduled another events to be in 10 seconds later
             handler.postDelayed(periodicUpdate, 10*1000); //milliseconds
                     // below is whatever you want to do
-
+            //broadcastReceiver();
         }
     };
+ */
+
+
+/*
+    Timer timer;
+    TimerTask timerTask;
+    final Handler handler = new Handler();
+
+
+    @Override
+    public void onCreate() {
+        //super.onCreate();
+        startTimer();
+    }
+
+    @Override
+    public void startTimer() {
+        //set a new Timer
+        timer = new Timer();
+
+        //initialize the TimerTask's job
+        initializeTimerTask();
+
+        timer.schedule(timerTask, 0, 5000);
+    }
+
+    public void initializeTimerTask() {
+        timerTask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        //code to run after every 5 seconds
+                        statusTextView.setText("Searching...");
+                        searchButton.setEnabled(false);
+                        bluetoothDevices.clear();
+                        addresses.clear();
+                        bluetoothAdapter.startDiscovery();
+                    }
+                });
+            }
+        };
+    }
+
+*/
+
+
 
 
     TextView alertTextView;
@@ -105,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     // Get instance of Vibrator from current Context
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 500 milliseconds
-                    v.vibrate(500);
+                    v.vibrate(1000);
                     TextView text = (TextView) findViewById(R.id.counterTextView);
                     counter = counter + 1;
                     text.setText(String.valueOf(counter));
@@ -210,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         bluetoothDevices.clear();
         addresses.clear();
         bluetoothAdapter.startDiscovery();
+
     }
 
     @Override
@@ -241,6 +280,9 @@ public class MainActivity extends AppCompatActivity {
     //    super.onCreate(savedInstanceState);
     //    setContentView(R.layout.activity_main);
     //}
+
+
+
 
 
 }

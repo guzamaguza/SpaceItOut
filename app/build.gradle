@@ -1,6 +1,16 @@
 apply plugin: 'com.android.application'
 
+
+
 android {
+    signingConfigs {
+        key0 {
+            storeFile file('C:\\Users\\Mark.Guza\\Desktop\\Professional\\AndroidStudioProjects\\Corona Counter\\app-release.apk')
+            storePassword 'Bethanybeach77!!'
+            keyAlias = 'key0'
+            keyPassword 'Bethanybeach77!!'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {

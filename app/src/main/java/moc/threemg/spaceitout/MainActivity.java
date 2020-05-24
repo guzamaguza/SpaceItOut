@@ -1,4 +1,4 @@
-package com.example.coronacounter;
+package moc.threemg.spaceitout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,74 +22,19 @@ import java.lang.Math;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Handler;
-import java.util.logging.LogRecord;
 
 import android.os.Vibrator;
+import android.widget.Toast;
+
+import moc.threemg.spaceitout.R;
+
+//import com.example.spaceitout.R;
 
 
 public class MainActivity extends AppCompatActivity {
     int counter = 0;
-
     int timer_counter = 0;
-
-/*
-    Handler handler = new Handler();
-    private Runnable periodicUpdate = new Runnable () {
-        @Override
-        public void run() {
-            // scheduled another events to be in 10 seconds later
-            handler.postDelayed(periodicUpdate, 10*1000); //milliseconds
-                    // below is whatever you want to do
-            //broadcastReceiver();
-        }
-    };
- */
-
-
-/*
-    Timer timer;
-    TimerTask timerTask;
-    final Handler handler = new Handler();
-
-
-    @Override
-    public void onCreate() {
-        //super.onCreate();
-        startTimer();
-    }
-
-    @Override
-    public void startTimer() {
-        //set a new Timer
-        timer = new Timer();
-
-        //initialize the TimerTask's job
-        initializeTimerTask();
-
-        timer.schedule(timerTask, 0, 5000);
-    }
-
-    public void initializeTimerTask() {
-        timerTask = new TimerTask() {
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
-                        //code to run after every 5 seconds
-                        statusTextView.setText("Searching...");
-                        searchButton.setEnabled(false);
-                        bluetoothDevices.clear();
-                        addresses.clear();
-                        bluetoothAdapter.startDiscovery();
-                    }
-                });
-            }
-        };
-    }
-
-*/
-
-
-
+    //private Context context;
 
     TextView alertTextView;
     TextView violationTextView;
@@ -101,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> bluetoothDevices = new ArrayList<>();
     ArrayList<String> addresses = new ArrayList<>();
     ArrayAdapter arrayAdapter;
-
     BluetoothAdapter bluetoothAdapter;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -112,8 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                statusTextView.setText("Finished");
+                //statusTextView.setText("Finished");
                 searchButton.setEnabled(true);
+
+                //triggerRebirth((Context) context);
+                //bluetoothAdapter.startDiscovery();
+                //intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+                timerPress();
+
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String name = device.getName();
@@ -139,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 //double counter = 0;
 
 
-                if (distance_ft < 6.00) {
+                if (distance_ft < 5.00) {
                     // Get instance of Vibrator from current Context
                     Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     // Vibrate for 500 milliseconds
@@ -151,99 +101,44 @@ public class MainActivity extends AppCompatActivity {
                     final TextView alert = findViewById(R.id.alertTextView);
                     alert.setVisibility(View.VISIBLE);
 
-/*
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    alert.setVisibility(View.VISIBLE);
-                                }
-                            });
-                        }
-                    },5000);
 
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isDestroyed() && !isFinishing()) {
-                                alert.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    },5000);
-
-*/
                 }
 
-                    if (!addresses.contains(address)) {
+                    if (addresses.contains(address) || !addresses.contains(address)) {
                     addresses.add(address);
                     String deviceString = "";
                     if (name == null || name.equals("")) {
                         //deviceString = address + " - RSSI " + rssi + "dBm" + distance_ft;
                         deviceString = "Device:   " + address + "              " + "Distance: " + distance_round + "  Feet Away!!!";
-                        /*
-                        if (distance_ft < 6.00) {
-                            // Get instance of Vibrator from current Context
-                            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            // Vibrate for 400 milliseconds
-                            v.vibrate(500);
 
-
-                            //alertTextView.setVisibility(View.VISIBLE);
-                            //alertTextView.postDelayed(new Runnable() {
-                            //    public void run() {
-                            //        alertTextView.setVisibility(View.VISIBLE);
-                            //    }
-                            //}, 7000);
-
-                            //findViewById(alertTextView).setVisibility(View.VISIBLE);
-                            //TextView textView = (TextView)findViewById(R.id.alertTextView);
-                            //textView.setVisibility(TextView.VISIBLE);
-
-                            //counterTextView.setText("One");
-                            //counter = counter + 1;
-                            //String counter_out = String.valueOf(counter);
-                            //counterTextView.setText("Hi");
-                        }
-                        */
 
                     } else {
                         //deviceString = name + " - RSSI " + rssi + "dBm" + distance_ft;
                         deviceString = "Device:   " + address + "              " + "Distance: " + distance_round + "  Feet Away!!!";
 
-
-                        /*
-                        if (distance_ft < 6.00) {
-                            // Get instance of Vibrator from current Context
-                            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                            // Vibrate for 400 milliseconds
-                            v.vibrate(500);
-
-
-                            //alertTextView.setVisibility(View.VISIBLE);
-                            //TextView textView = (TextView)findViewById(R.id.alertTextView);
-                            //textView.setVisibility(TextView.VISIBLE);
-
-                            //counterTextView.setText("One");
-                            //counter = counter + 1;
-                            //String counter_out = String.valueOf(counter);
-                            //counterTextView.setText("Hi");
-                        }
-                        */
                     }
 
 
                     bluetoothDevices.add(deviceString);
                     arrayAdapter.notifyDataSetChanged();
+
+                    /*
+                    if (!searchButton.isPressed()) {
+                        searchButton.performClick();
+                        bluetoothAdapter.startDiscovery();
+                        //timerPress();
+                    }
+                    */
+
                 }
             }
         }
     };
 
+
+
     public void searchClicked(View view) {
-        statusTextView.setText("Searching...");
+        statusTextView.setText("SEARCHING...");
         searchButton.setEnabled(false);
         bluetoothDevices.clear();
         addresses.clear();
@@ -253,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -264,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setAdapter(arrayAdapter);
 
+        //super.onCreate(savedInstanceState);
+        //context = this;
+
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         IntentFilter intentFilter = new IntentFilter();
@@ -273,16 +173,33 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(broadcastReceiver, intentFilter);
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                testToast();
+            }
+        }, 5000);
+
     }
 
-    //@Override
-    //protected void onCreate(Bundle savedInstanceState) {
-    //    super.onCreate(savedInstanceState);
-    //    setContentView(R.layout.activity_main);
-    //}
+    private void testToast() {
+        Toast.makeText(this, "Scanning For Nearby People...", Toast.LENGTH_SHORT).show();
+        searchButton.performClick();
+        bluetoothAdapter.startDiscovery();
+    }
 
 
-
+    private void timerPress(){
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                //searchButton.performClick();
+                bluetoothAdapter.startDiscovery();
+                //intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            }
+        }, 5000, 15000);//put here time 1000 milliseconds=1 second
+    }
 
 
 }
